@@ -3,4 +3,4 @@
 #= require_tree .
 
 @App = {}
-App.cable = ActionCable.createConsumer()
+App.cable = ActionCable.createConsumer('ws://localhost:3000/ws')
