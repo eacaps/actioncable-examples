@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', git: 'https://github.com/rails/rails.git', branch: 'master'
+gem 'rails', git: 'https://github.com/eacaps/rails.git', branch: 'actioncable-deadlock'
 gem 'sprockets-rails', github: "rails/sprockets-rails"
 
 gem 'sqlite3'
