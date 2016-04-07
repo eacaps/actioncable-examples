@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', git: 'https://github.com/eacaps/rails.git', branch: 'testing-branch'
+gem 'rails', git: 'https://github.com/eacaps/rails.git', branch: 'debugging-branch'
 gem 'sprockets-rails', github: "rails/sprockets-rails"
 
 gem 'sqlite3'
