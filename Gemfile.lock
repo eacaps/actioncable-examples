@@ -33,7 +33,7 @@ GIT
 
 GIT
   remote: https://github.com/eacaps/rails.git
-  revision: 2b4c3f43d18235a39af156ce05c6d323cb1946ef
+  revision: 01795f59cae80327ab20b22e31aaa4dc895ba35a
   branch: debugging-branch
   specs:
     actioncable (5.0.0.beta3)
