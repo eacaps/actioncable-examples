@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/rails/sprockets-rails.git
-  revision: 4f4b387ea315ba76048079434d53dd44d5a3b0ce
+  revision: 89ba006950caba495954fbb1626919bfe4ee7838
   specs:
     sprockets-rails (3.0.4)
       actionpack (>= 4.0)
@@ -33,8 +33,8 @@ GIT
 
 GIT
   remote: https://github.com/eacaps/rails.git
-  revision: 01795f59cae80327ab20b22e31aaa4dc895ba35a
-  branch: debugging-branch
+  revision: 6dc0c21a05b34272e897bafadf054ff925f7b55a
+  branch: actioncable/server-base-channel-classes
   specs:
     actioncable (5.0.0.beta3)
       actionpack (= 5.0.0.beta3)
@@ -105,7 +105,11 @@ GEM
     concurrent-ruby (1.0.1)
     debug_inspector (0.0.2)
     erubis (2.7.0)
+    eventmachine (1.2.0.1)
     execjs (2.6.0)
+    faye-websocket (0.10.3)
+      eventmachine (>= 0.12.0)
+      websocket-driver (>= 0.5.1)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
@@ -145,7 +149,7 @@ GEM
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
     rake (11.1.2)
-    redis (3.2.2)
+    redis (3.3.0)
     sass (3.4.22)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -175,6 +179,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   coffee-rails!
+  faye-websocket
   jbuilder (~> 2.0)
   jquery-rails
   puma

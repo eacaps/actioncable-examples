@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-#gem 'rails', git: 'https://github.com/eacaps/rails.git', branch: 'actioncable/server-base-channel-classes'
-gem 'rails', git: 'https://github.com/eacaps/rails.git', branch: 'debugging-branch'
+gem 'rails', git: 'https://github.com/eacaps/rails.git', branch: 'actioncable/server-base-channel-classes'
+# gem 'rails', git: 'https://github.com/eacaps/rails.git', branch: 'debugging-branch'
 gem 'sprockets-rails', github: "rails/sprockets-rails"
 
 gem 'sqlite3'
@@ -15,6 +15,8 @@ gem 'jquery-rails'
 gem 'turbolinks', github: "rails/turbolinks"
 
 gem 'jbuilder', '~> 2.0'
+
+gem 'faye-websocket'
 
 group :development, :test do
   gem 'byebug'
