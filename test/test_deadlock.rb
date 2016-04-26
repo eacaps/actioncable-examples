@@ -130,10 +130,13 @@ class QuickTest < SampleTestCase
     assert_equal({"type" => "welcome"}, c.read_message)  # pop the first welcome message off the stack
     c.send_message command: 'subscribe', identifier: JSON.generate(channel: 'CommentsChannel')
     c.send_message command: 'subscribe', identifier: JSON.generate(channel: 'OtherChannel')
-    assert_equal({"identifier"=>"{\"channel\":\"CommentsChannel\"}", "type"=>"confirm_subscription"}, c.read_message)
-    assert_equal({"identifier"=>"{\"channel\":\"OtherChannel\"}", "type"=>"confirm_subscription"}, c.read_message)
-    # c.send_message command: 'message', identifier: JSON.generate(channel: 'EchoChannel'), data: JSON.generate(action: 'ding', message: 'hello')
-    # assert_equal({"identifier"=>"{\"channel\":\"EchoChannel\"}", "message"=>{"dong"=>"hello"}}, c.read_message)
+    messages = []
+    messages.push(c.read_message)
+    messages.push(c.read_message)
+    messages.push(c.read_message)
+    assert_equal(messages.length, 3)
+    assert_includes(messages, {"identifier"=>"{\"channel\":\"CommentsChannel\"}", "type"=>"confirm_subscription"})
+    assert_includes(messages, {"identifier"=>"{\"channel\":\"OtherChannel\"}", "type"=>"confirm_subscription"})
     c.close
   end
 end
