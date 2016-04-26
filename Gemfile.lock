@@ -33,8 +33,8 @@ GIT
 
 GIT
   remote: https://github.com/eacaps/rails.git
-  revision: 6dc0c21a05b34272e897bafadf054ff925f7b55a
-  branch: actioncable/server-base-channel-classes
+  revision: 2d744fee9c05285a4fceb0ac8430a3e6db3ec19a
+  branch: master
   specs:
     actioncable (5.0.0.beta3)
       actionpack (= 5.0.0.beta3)
