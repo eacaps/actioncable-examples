@@ -1,63 +1,39 @@
-require 'test_helper'
-require 'faye/websocket'
+require_relative 'test_helper'
+require 'concurrent'
 
-class ClientTest < ActiveSupport::TestCase
+require 'active_support/core_ext/hash/indifferent_access'
+require 'pathname'
+
+require 'faye/websocket'
+require 'json'
+
+class QuickTest < SampleTestCase
   WAIT_WHEN_EXPECTING_EVENT = 8
   WAIT_WHEN_NOT_EXPECTING_EVENT = 0.5
-
-  def test_app
-    with_puma_server do |port|
-      c = faye_client(port)
-      assert_equal({"type" => "welcome"}, c.read_message)  # pop the first welcome message off the stack
-      c.send_message command: 'subscribe', identifier: JSON.generate(channel: 'EchoChannel')
-      assert_equal({"identifier"=>"{\"channel\":\"EchoChannel\"}", "type"=>"confirm_subscription"}, c.read_message)
-      c.send_message command: 'message', identifier: JSON.generate(channel: 'EchoChannel'), data: JSON.generate(action: 'ding', message: 'hello')
-      assert_equal({"identifier"=>"{\"channel\":\"EchoChannel\"}", "message"=>{"dong"=>"hello"}}, c.read_message)
-      c.close
-    end
-  end
-
-  def test_app_spawn
-
-    puts 'sleep over'
-    c = faye_client(3000)
-    assert_equal({"type" => "welcome"}, c.read_message)  # pop the first welcome message off the stack
-    c.send_message command: 'subscribe', identifier: JSON.generate(channel: 'CommentsChannel')
-    assert_equal({"identifier"=>"{\"channel\":\"CommentsChannel\"}", "type"=>"confirm_subscription"}, c.read_message)
-
-  end
 
   def setup
     @pid = Process.spawn('rails server -b 0.0.0.0 -p 3000 -e development')
     Thread.new { EventMachine.run } unless EventMachine.reactor_running?
     Thread.pass until EventMachine.reactor_running?
+
+    # faye-websocket is warning-rich
+    @previous_verbose, $VERBOSE = $VERBOSE, nil
     sleep(5)
   end
 
   def teardown
+    $VERBOSE = @previous_verbose
+    # faye-websocket is warning-rich
+    @previous_verbose, $VERBOSE = $VERBOSE, nil
     Process.kill('INT', @pid)
     Process.wait()
-  end
-
-  def with_puma_server(rack_app = ActioncableExamples, port = 3099)
-    server = ::Puma::Server.new(rack_app, ::Puma::Events.strings)
-    server.add_tcp_listener '127.0.0.1', port
-    server.min_threads = 1
-    server.max_threads = 4
-
-    t = Thread.new { server.run.join }
-    yield port
-
-  ensure
-    server.stop(true) if server
-    t.join if t
   end
 
   class SyncClient
     attr_reader :pings
 
     def initialize(port)
-      @ws = Faye::WebSocket::Client.new("ws://localhost:#{port}/ws")
+      @ws = Faye::WebSocket::Client.new("ws://127.0.0.1:#{port}/ws")
       @messages = Queue.new
       @closed = Concurrent::Event.new
       @has_messages = Concurrent::Semaphore.new(0)
@@ -147,5 +123,17 @@ class ClientTest < ActiveSupport::TestCase
 
   def faye_client(port)
     SyncClient.new(port)
+  end
+
+  def test_single_client
+    c = faye_client(3000)
+    assert_equal({"type" => "welcome"}, c.read_message)  # pop the first welcome message off the stack
+    c.send_message command: 'subscribe', identifier: JSON.generate(channel: 'CommentsChannel')
+    # assert_equal({"identifier"=>"{\"channel\":\"CommentsChannel\"}", "type"=>"confirm_subscription"}, c.read_message)
+    c.send_message command: 'subscribe', identifier: JSON.generate(channel: 'OtherChannel')
+    # assert_equal({"identifier"=>"{\"channel\":\"OtherChannel\"}", "type"=>"confirm_subscription"}, c.read_message)
+    # c.send_message command: 'message', identifier: JSON.generate(channel: 'EchoChannel'), data: JSON.generate(action: 'ding', message: 'hello')
+    # assert_equal({"identifier"=>"{\"channel\":\"EchoChannel\"}", "message"=>{"dong"=>"hello"}}, c.read_message)
+    c.close
   end
 end
