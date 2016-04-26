@@ -32,8 +32,8 @@ GIT
       railties (>= 4.2)
 
 GIT
-  remote: https://github.com/eacaps/rails.git
-  revision: 2d744fee9c05285a4fceb0ac8430a3e6db3ec19a
+  remote: https://github.com/rails/rails.git
+  revision: f03c27cad2d3b4a9751cccdc3834f719f1cfbaa2
   branch: master
   specs:
     actioncable (5.0.0.beta3)
