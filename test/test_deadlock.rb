@@ -129,9 +129,9 @@ class QuickTest < SampleTestCase
     c = faye_client(3000)
     assert_equal({"type" => "welcome"}, c.read_message)  # pop the first welcome message off the stack
     c.send_message command: 'subscribe', identifier: JSON.generate(channel: 'CommentsChannel')
-    # assert_equal({"identifier"=>"{\"channel\":\"CommentsChannel\"}", "type"=>"confirm_subscription"}, c.read_message)
     c.send_message command: 'subscribe', identifier: JSON.generate(channel: 'OtherChannel')
-    # assert_equal({"identifier"=>"{\"channel\":\"OtherChannel\"}", "type"=>"confirm_subscription"}, c.read_message)
+    assert_equal({"identifier"=>"{\"channel\":\"CommentsChannel\"}", "type"=>"confirm_subscription"}, c.read_message)
+    assert_equal({"identifier"=>"{\"channel\":\"OtherChannel\"}", "type"=>"confirm_subscription"}, c.read_message)
     # c.send_message command: 'message', identifier: JSON.generate(channel: 'EchoChannel'), data: JSON.generate(action: 'ding', message: 'hello')
     # assert_equal({"identifier"=>"{\"channel\":\"EchoChannel\"}", "message"=>{"dong"=>"hello"}}, c.read_message)
     c.close
