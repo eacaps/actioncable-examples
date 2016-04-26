@@ -125,7 +125,8 @@ class QuickTest < SampleTestCase
     SyncClient.new(port)
   end
 
-  def test_single_client
+  def test_deadlock_situation
+    puts 'starting deadlock test'
     c = faye_client(3000)
     assert_equal({"type" => "welcome"}, c.read_message)  # pop the first welcome message off the stack
     c.send_message command: 'subscribe', identifier: JSON.generate(channel: 'CommentsChannel')
